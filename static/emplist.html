@@ -1,0 +1,144 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<head>
+        <link REL="shortcut icon" href="img/favicon.ico"/>
+		<title>emplist</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<link rel="stylesheet" type="text/css" href="css/style.css" />
+        <script src="js/jquery-3.3.1.min.js"></script>
+        <script>
+            $.ajax({
+                        async: false,
+                        type:"get",
+                        url:"/ems/forcelogin/",
+                        success:function (msg) {
+                            if (msg == 0){
+                                location.href = "./login.html";
+                            }
+                        }
+             });
+            $(function () {
+                    $.ajax({
+                    type:'get',
+                    url:'/ems/main/',
+                    success:function (msg) {
+                         obj = msg.ems;
+                         before = $('#tb').html();
+                        for (var i = 0;i < obj.length;i++){
+                            emp = obj[i];
+                            if (i%2 == 0){
+                                before += "<tr class='row2'>";
+                                before += "<td>"+emp["id"]+"</td>";
+                                before += "<td><img src="+emp["headpic"]+" width=\"80px\"></td>";
+                                before += "<td>"+emp["name"]+"</td>";
+                                before += "<td>"+emp["salary"]+"</td>";
+                                before += "<td>"+emp["age"]+"</td>";
+                                before += "<td><a href=\"javascript:void(0);\" onclick=\"deleteEms("+emp.id+")\">delete emp</a>&nbsp;<a href=\"javascript:void(0);\" onclick=\"updateEms("+emp.id+")\">update emp</a></td>";
+                                before += "</tr>";
+                            } else{
+                                before += "<tr class='row1'>";
+                                before += "<td>"+emp["id"]+"</td>";
+                                before += "<td><img src="+emp["headpic"]+" width=\"80px\"></td>";
+                                before += "<td>"+emp["name"]+"</td>";
+                                before += "<td>"+emp["salary"]+"</td>";
+                                before += "<td>"+emp["age"]+"</td>";
+                                before += "<td><a href=\"javascript:void(0);\" onclick=\"deleteEms("+emp.id+")\">delete emp</a>&nbsp;<a href=\"javascript:void(0);\" onclick=\"updateEms("+emp.id+")\">update emp</a></td>";
+                                before += "</tr>";
+                            }
+                        }
+                        $('#tb').html(before);
+                    }
+                })
+
+            });
+            function deleteEms(id) {
+                    var flag = confirm("确定是否删除？")
+                    if (flag == true){
+                        $.ajax({
+                            type:"get",
+                            url:"/ems/delete/",
+                            data:"id="+ id,
+                            success:function (msg) {
+                                if(msg == "1"){
+                                    alert("删除成功！");
+                                    location.href = "./emplist.html"
+                                }
+                            }
+                        })
+                    }
+                }
+            function updateEms(id) {
+                $.ajax({
+                    type:"get",
+                    url:"/ems/update/",
+                    data:"id=" + id,
+                    success:function (msg) {
+                        if (msg == "1"){
+                            location.href = "./updateEmp.html"
+                        }else{
+                            alert("页面过期，请刷新后重试")
+                        }
+                    }
+                })
+            }
+        </script>
+	</head>
+	<body>
+		<div id="wrap">
+			<div id="top_content"> 
+				<div id="header">
+					<div id="rightheader">
+						<p>
+							2019/07/18
+							<br />
+						</p>
+					</div>
+					<div id="topheader">
+						<h1 id="title">
+							<a href="#">main</a>
+						</h1>
+					</div>
+					<div id="navigation">
+					</div>
+				</div>
+				<div id="content">
+					<p id="whereami">
+					</p>
+					<h1>
+						Welcome!
+					</h1>
+					<table id='tb'class="table">
+						<tr class="table_header">
+							<td>
+								ID
+							</td>
+							<td>
+								Headpic
+							</td>
+							<td>
+								Name
+							</td>
+							<td>
+								Salary
+							</td>
+							<td>
+								Age
+							</td>
+                            <td>
+                                Operation
+                            </td>
+						</tr>
+					</table>
+					<p>
+						<input type="button" class="button" value="Add Employee" onclick="location='./addEmp.html'"/>
+					</p>
+				</div>
+			</div>
+			<div id="footer">
+				<div id="footer_bg">
+				ABC@126.com
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

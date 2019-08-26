@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<head>
+        <link REL="shortcut icon" href="img/favicon.ico"/>
+		<title>add Emp</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<link rel="stylesheet" type="text/css"
+			href="css/style.css" />
+        <script src="js/jquery-3.3.1.min.js"></script>
+        <script src="js/jquery.cookie.js"></script>
+        <script>
+                $.ajax({
+                        async: false,
+                        type:"get",
+                        url:"/ems/forcelogin/",
+                        success:function (msg) {
+                            if (msg == 0){
+                                location.href = "./login.html"
+                            }
+                        }
+             });
+            function addEmp() {
+                var formData = new FormData($('#form0')[0]);
+                formData.append("csrfmiddlewaretoken",$.cookie("csrftoken"));
+                $.ajax({
+                    type:"post",
+                    url:"/ems/addstatus/",
+                    data:formData,
+                    contentType:false,
+                    processData:false,
+                    success:function (msg) {
+                        if (msg == "1") {
+                            alert("修改成功！");
+                            location.href = "./emplist.html";
+                        }else{
+                            alert("内容输入有误，请重新输入！");
+                        }
+                    }
+                })
+            }
+        </script>
+	</head>
+
+	<body>
+		<div id="wrap">
+			<div id="top_content">
+					<div id="header">
+						<div id="rightheader">
+							<p>
+								2019/07/18
+								<br />
+							</p>
+						</div>
+						<div id="topheader">
+							<h1 id="title">
+								<a href="#">Main</a>
+							</h1>
+						</div>
+						<div id="navigation">
+						</div>
+					</div>
+				<div id="content">
+					<p id="whereami">
+					</p>
+					<h1>
+						add Emp info:
+					</h1>
+					<form action="javascript:void(0);" method="post" id="form0" enctype="multipart/form-data">
+						<table cellpadding="0" cellspacing="0" border="0"
+							class="form_table">
+                            <tr>
+								<td valign="middle" align="right">
+									headpic:
+								</td>
+								<td valign="middle" align="left">
+									<input type="file" class="inputgri" name="headpic" />
+								</td>
+							</tr>
+							<tr>
+								<td valign="middle" align="right">
+									name:
+								</td>
+								<td valign="middle" align="left">
+									<input type="text" class="inputgri" name="name" />
+								</td>
+							</tr>
+							<tr>
+								<td valign="middle" align="right">
+									salary:
+								</td>
+								<td valign="middle" align="left">
+									<input type="text" class="inputgri" name="salary" />
+								</td>
+							</tr>
+							<tr>
+								<td valign="middle" align="right">
+									age:
+								</td>
+								<td valign="middle" align="left">
+									<input type="text" class="inputgri" name="age" />
+								</td>
+							</tr>
+						</table>
+						<p>
+							<input type="button" class="button" value="Confirm" onclick="addEmp()" />
+						</p>
+					</form>
+				</div>
+			</div>
+			<div id="footer">
+				<div id="footer_bg">
+					ABC@126.com
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
